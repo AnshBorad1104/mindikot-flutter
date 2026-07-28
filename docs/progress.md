@@ -20,6 +20,15 @@
 
 `arena/019fa926-mindikot-flutter` (branched from stable)
 
+## Latest Commit (This Session)
+
+| Field | Value |
+|-------|-------|
+| Hash | `06b8530` |
+| Message | `docs: add project documentation, progress report, and architecture guide` |
+| Files | README.md, docs/architecture.md, docs/game_rules.md, docs/progress.md, docs/roadmap.md, docs/tasks.md |
+| Lines | +888 insertions, -1 deletion |
+
 ---
 
 ## Completed Milestones
@@ -90,7 +99,7 @@ All immutable, value-equality domain models are implemented and tested.
 
 ## Current Milestone
 
-**M7 — Documentation & Project Scaffolding** (In Progress)
+**M7 — Documentation & Project Scaffolding** ✅ Complete (this session, commit `06b8530`)
 
 ---
 
@@ -111,13 +120,13 @@ All immutable, value-equality domain models are implemented and tested.
 
 ```
 mindikot-flutter/
-├── README.md                              ← Needs upgrade
+├── README.md                              ✅ Updated with project overview
 ├── docs/
-│   ├── progress.md                        ← This file
-│   ├── architecture.md                    ← Architecture overview
-│   ├── game_rules.md                      ← Game rules reference
-│   ├── tasks.md                           ← Task tracker
-│   └── roadmap.md                         ← Development roadmap
+│   ├── progress.md                        ✅ This file (created)
+│   ├── architecture.md                    ✅ Architecture overview (created)
+│   ├── game_rules.md                      ✅ Game rules reference (created, DRAFT)
+│   ├── tasks.md                           ✅ Task tracker (created)
+│   └── roadmap.md                         ✅ Development roadmap (created)
 ├── pubspec.yaml                           ← MISSING (needed for Flutter project)
 ├── lib/
 │   └── game/
@@ -153,7 +162,7 @@ mindikot-flutter/
 
 | Agent | Role | Status |
 |-------|------|--------|
-| Agent 1 | Project Manager (Recovery) | 🔄 Active (this session) |
+| Agent 1 | Project Manager (Recovery) | ✅ Complete (M7 docs) |
 | Agent 2 | Game Rules Engineer | ⏳ Pending |
 | Agent 3 | Game Orchestrator Engineer | ⏳ Pending |
 | Agent 4 | Networking Engineer | ⏳ Pending |
