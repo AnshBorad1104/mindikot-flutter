@@ -19,7 +19,8 @@ void main() {
 
       expect(deck.totalCards, 104);
       expect(factory.isValidStandardDeck(deck, deckCount: 2), isTrue);
-      expect(deck.cards.where((card) => card == const Card(suit: Suit.hearts, rank: Rank.ace)), hasLength(2));
+      expect(deck.cards.where((card) => card.suit == Suit.hearts && card.rank == Rank.ace), hasLength(2));
+      expect(deck.cards.map((card) => card.id).toSet(), hasLength(104));
     });
 
     test('rejects an invalid deck count', () {
@@ -41,7 +42,7 @@ void main() {
     });
 
     test('shuffle preserves cards and used cards', () {
-      final card = const Card(suit: Suit.clubs, rank: Rank.two);
+      final card = Card(suit: Suit.clubs, rank: Rank.two);
       final validDeck = Deck(cards: factory.createStandard().cards.skip(1), usedCards: [card]);
       final shuffled = deckEngine.shuffle(validDeck, DeterministicShuffleStrategy(7));
 
@@ -69,7 +70,8 @@ void main() {
     });
 
     test('restores every used card when no selection is provided', () {
-      final deck = deckEngine.removeCards(factory.createStandard(), factory.createStandard().cards.take(2));
+      final source = factory.createStandard();
+      final deck = deckEngine.removeCards(source, source.cards.take(2));
       final restored = deckEngine.restoreCards(deck);
 
       expect(restored.usedCards, isEmpty);
@@ -79,7 +81,7 @@ void main() {
     test('rejects unavailable card removals', () {
       final deck = Deck();
       expect(
-        () => deckEngine.removeCards(deck, [const Card(suit: Suit.spades, rank: Rank.ace)]),
+        () => deckEngine.removeCards(deck, [Card(suit: Suit.spades, rank: Rank.ace)]),
         throwsStateError,
       );
     });
@@ -95,8 +97,9 @@ void main() {
       );
 
       expect(result.hands.values.every((hand) => hand.length == 13), isTrue);
-      expect(result.hands['p1']!.first, const Card(suit: Suit.clubs, rank: Rank.two));
-      expect(result.hands['p2']!.first, const Card(suit: Suit.clubs, rank: Rank.three));
+      expect(result.hands['p1']!.first.suit, Suit.clubs);
+      expect(result.hands['p1']!.first.rank, Rank.two);
+      expect(result.hands['p2']!.first.rank, Rank.three);
       expect(result.remainingDeck.cards, isEmpty);
     });
 

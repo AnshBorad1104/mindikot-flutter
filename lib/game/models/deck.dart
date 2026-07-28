@@ -2,10 +2,15 @@ import 'card.dart';
 
 /// An immutable deck state, including cards still available and cards used.
 class Deck {
-  /// Creates a deck. Duplicate card values are supported for multi-deck games.
+  /// Creates a deck with unique physical cards.
   Deck({Iterable<Card> cards = const [], Iterable<Card> usedCards = const []})
       : cards = List.unmodifiable(cards),
-        usedCards = List.unmodifiable(usedCards);
+        usedCards = List.unmodifiable(usedCards) {
+    final allCards = [...this.cards, ...this.usedCards];
+    if (allCards.map((card) => card.id).toSet().length != allCards.length) {
+      throw ArgumentError('A deck cannot contain the same physical card twice.');
+    }
+  }
 
   /// Cards available to draw, in draw order.
   final List<Card> cards;

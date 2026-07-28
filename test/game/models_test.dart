@@ -3,18 +3,22 @@ import '../../lib/game/game.dart';
 
 void main() {
   group('Card', () {
-    test('uses suit and rank for value equality', () {
-      expect(
-        const Card(suit: Suit.hearts, rank: Rank.ace),
-        equals(const Card(suit: Suit.hearts, rank: Rank.ace)),
-      );
+    test('uses physical id, suit, and rank for value equality', () {
+      final first = Card(id: 'first', suit: Suit.hearts, rank: Rank.ace);
+      final equal = Card(id: 'first', suit: Suit.hearts, rank: Rank.ace);
+      final second = Card(id: 'second', suit: Suit.hearts, rank: Rank.ace);
+      expect(first, equals(equal));
+      expect(first.hashCode, equal.hashCode);
+      expect(first, isNot(equals(second)));
     });
   });
 
   group('Deck', () {
-    test('supports duplicate card values for multi-deck games', () {
-      const card = Card(suit: Suit.spades, rank: Rank.two);
-      expect(Deck(cards: [card], usedCards: [card]).totalCards, 2);
+    test('supports equal-valued cards with distinct physical ids', () {
+      final first = Card(id: 'deck-1', suit: Suit.spades, rank: Rank.two);
+      final second = Card(id: 'deck-2', suit: Suit.spades, rank: Rank.two);
+      expect(Deck(cards: [first, second]).totalCards, 2);
+      expect(() => Deck(cards: [first], usedCards: [first]), throwsArgumentError);
     });
   });
 
@@ -41,7 +45,7 @@ void main() {
 
   group('GameState', () {
     test('defensively copies supplied hands', () {
-      final suppliedHand = [const Card(suit: Suit.clubs, rank: Rank.ace)];
+      final suppliedHand = [Card(suit: Suit.clubs, rank: Rank.ace)];
       final state = GameState(room: Room(id: 'room'), deck: Deck(), hands: {'p1': suppliedHand});
       suppliedHand.clear();
 

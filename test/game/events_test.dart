@@ -13,18 +13,19 @@ void main() {
 
   group('game events', () {
     test('create immutable event values', () {
+      final card = Card(suit: Suit.hearts, rank: Rank.ace);
       final event = CardPlayedEvent(
         matchId: 'match-1',
         sequence: 2,
         occurredAt: timestamp,
         playerId: 'player-1',
-        card: const Card(suit: Suit.hearts, rank: Rank.ace),
+        card: card,
       );
 
       expect(event.matchId, 'match-1');
       expect(event.sequence, 2);
       expect(event.playerId, 'player-1');
-      expect(event.card, const Card(suit: Suit.hearts, rank: Rank.ace));
+      expect(event.card, card);
     });
 
     test('use value equality for matching events', () {
@@ -80,7 +81,7 @@ void main() {
         TurnEndedEvent(matchId: 'match-1', sequence: 5, occurredAt: timestamp, playerId: 'player-1'),
         CardPlayedEvent(
           matchId: 'match-1', sequence: 6, occurredAt: timestamp, playerId: 'player-1',
-          card: const Card(suit: Suit.clubs, rank: Rank.two),
+          card: Card(suit: Suit.clubs, rank: Rank.two),
         ),
         PlayerJoinedEvent(matchId: 'match-1', sequence: 7, occurredAt: timestamp, playerId: 'player-1'),
         PlayerLeftEvent(matchId: 'match-1', sequence: 8, occurredAt: timestamp, playerId: 'player-1'),

@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 import '../../lib/game/game.dart';
 
 void main() {
-  const ownedCard = Card(suit: Suit.hearts, rank: Rank.ace);
-  const otherCard = Card(suit: Suit.spades, rank: Rank.king);
+  final ownedCard = Card(suit: Suit.hearts, rank: Rank.ace);
+  final otherCard = Card(suit: Suit.spades, rank: Rank.king);
   final validator = RuleValidator();
 
   GameState state({
     String currentPlayerId = 'p1',
     TurnState turnState = TurnState.active,
-    Map<String, Iterable<Card>> hands = const {'p1': [ownedCard], 'p2': [otherCard]},
+    Map<String, Iterable<Card>>? hands,
     Round? round,
   }) => GameState(
         room: Room(
@@ -20,7 +20,7 @@ void main() {
         deck: Deck(),
         currentPlayerId: currentPlayerId,
         turnState: turnState,
-        hands: hands,
+        hands: hands ?? {'p1': [ownedCard], 'p2': [otherCard]},
         round: round,
       );
 
@@ -54,7 +54,7 @@ void main() {
           tricks: [
             Trick(
               leaderId: 'p1',
-              plays: [const TrickPlay(playerId: 'p1', card: ownedCard)],
+              plays: [TrickPlay(playerId: 'p1', card: ownedCard)],
             ),
           ],
         ),
@@ -66,9 +66,33 @@ void main() {
     expect(result.violations, [RuleViolation.cardAlreadyPlayed]);
   });
 
+  test('does not treat another physical copy as already played', () {
+    final playedCopy = Card(id: 'deck-1-ace', suit: Suit.hearts, rank: Rank.ace);
+    final heldCopy = Card(id: 'deck-2-ace', suit: Suit.hearts, rank: Rank.ace);
+    final result = validator.validateMove(
+      gameState: state(
+        hands: {'p1': [heldCopy], 'p2': [otherCard]},
+        round: Round(
+          number: 1,
+          startingPlayerId: 'p1',
+          tricks: [
+            Trick(
+              leaderId: 'p2',
+              plays: [TrickPlay(playerId: 'p2', card: playedCopy)],
+            ),
+          ],
+        ),
+      ),
+      playerId: 'p1',
+      card: heldCopy,
+    );
+
+    expect(result.isValid, isTrue);
+  });
+
   test('rejects a player with an empty hand', () {
     final result = validator.validateMove(
-      gameState: state(hands: const {'p1': [], 'p2': [otherCard]}),
+      gameState: state(hands: {'p1': [], 'p2': [otherCard]}),
       playerId: 'p1',
       card: ownedCard,
     );
@@ -101,7 +125,7 @@ void main() {
       deck: Deck(),
       currentPlayerId: 'p1',
       turnState: TurnState.active,
-      hands: const {'p1': [ownedCard]},
+      hands: {'p1': [ownedCard]},
     );
     final inactive = validator.validateMove(
       gameState: inactiveState,
