@@ -7,6 +7,7 @@ export 'engine/deck_engine.dart';
 export 'engine/deck_factory.dart';
 export 'engine/shuffle_strategy.dart';
 export 'engine/turn_manager.dart';
+export 'engine/trick_engine.dart';
 export 'models/card.dart';
 export 'rules/move_validation_result.dart';
 export 'rules/rule_result.dart';
