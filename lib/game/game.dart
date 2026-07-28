@@ -2,6 +2,7 @@
 library;
 
 export 'engine/deal_manager.dart';
+export 'events/game_event.dart';
 export 'engine/deck_engine.dart';
 export 'engine/deck_factory.dart';
 export 'engine/shuffle_strategy.dart';
